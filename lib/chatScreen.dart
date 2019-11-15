@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dash_chat/dash_chat.dart';
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +9,7 @@ import 'package:flutter_socket_chat_app/blocs/authenticationBloc/event.dart';
 import 'package:flutter_socket_chat_app/blocs/chatBloc/bloc.dart';
 import 'package:flutter_socket_chat_app/blocs/chatBloc/state.dart';
 import 'package:flutter_socket_chat_app/widgets/loadingIndicator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'blocs/authenticationBloc/bloc.dart';
@@ -20,7 +24,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   List<ChatMessage> chatMessages = [];
   ChatUser user;
-
+  String _text;
   ChatBloc chatBloc;
 
   @override
@@ -34,6 +38,25 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     chatBloc.dispatch(DisconnectChat());
     super.dispose();
+  }
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    var text = await convertImage(image);
+    setState(() {
+      _text = text;
+    });
+  }
+
+  Future<String> convertImage(var image) async {
+    File _image = image;
+    final FirebaseVisionImage _visionImage = FirebaseVisionImage.fromFile(
+        _image);
+    final TextRecognizer _textRecognizer = FirebaseVision.instance.textRecognizer();
+    final VisionText _visionText = await _textRecognizer.processImage(_visionImage);
+    String _detectedText = _visionText.text;
+    return _detectedText;
   }
 
   @override
@@ -72,13 +95,13 @@ class _ChatScreenState extends State<ChatScreen> {
               chatMessages = state.chatMessages;
               user = state.user;
             });
-            chatBloc.dispatch(Idle()); 
+            chatBloc.dispatch(Idle());
           }
-          if(state is ChatHasNewMessage) {
+          if (state is ChatHasNewMessage) {
             setState(() {
               chatMessages = state.chatMessages;
             });
-            chatBloc.dispatch(Idle()); 
+            chatBloc.dispatch(Idle());
           }
         },
         child: BlocBuilder(
@@ -104,6 +127,19 @@ class _ChatScreenState extends State<ChatScreen> {
                 });
               },
               showAvatarForEveryMessage: false,
+              text: _text,
+              trailing: <Widget>[
+                CupertinoButton(
+                  minSize: 0,
+                  padding: EdgeInsets.all(5),
+                  child: Icon(
+                    Icons.image,
+                    color: Colors.grey,
+                    size: 20,
+                  ),
+                  onPressed: () {},
+                )
+              ],
             );
           },
         ),
