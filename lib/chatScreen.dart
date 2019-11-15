@@ -72,11 +72,13 @@ class _ChatScreenState extends State<ChatScreen> {
               chatMessages = state.chatMessages;
               user = state.user;
             });
+            chatBloc.dispatch(Idle()); 
           }
           if(state is ChatHasNewMessage) {
             setState(() {
               chatMessages = state.chatMessages;
             });
+            chatBloc.dispatch(Idle()); 
           }
         },
         child: BlocBuilder(

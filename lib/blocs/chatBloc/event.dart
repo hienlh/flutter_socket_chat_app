@@ -56,7 +56,6 @@ class FirstConnect extends ChatEvent {
   String toString() => 'First Connect ($data)';
 }
 
-
 class NewMessage extends ChatEvent {
   final dynamic data;
 
@@ -64,4 +63,9 @@ class NewMessage extends ChatEvent {
 
   @override
   String toString() => 'New Message ($data)';
+}
+
+class Idle extends ChatEvent {
+  @override
+  String toString() => 'Idle';
 }

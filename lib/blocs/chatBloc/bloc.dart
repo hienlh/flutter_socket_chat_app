@@ -74,6 +74,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       _chatMessages.add(message);
       yield ChatHasNewMessage(_chatMessages);
     }
+
+    if (event is Idle) {
+      yield ChatIdle();
+    }
   }
 
   void _dispatchConnected([_]) {

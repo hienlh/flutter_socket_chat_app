@@ -53,4 +53,10 @@ class ChatHasNewMessage extends ChatState {
   String toString() => 'ChatHasNewMessage (${chatMessages[chatMessages.length - 1]})';
 }
 
+class ChatIdle extends ChatState {
+  @override
+  String toString() => 'ChatIdle';
+}
+
+
 
