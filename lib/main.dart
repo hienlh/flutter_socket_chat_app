@@ -1,17 +1,18 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_socket_chat_app/app.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  BlocSupervisor().delegate = SimpleBlocDelegate();
+  await DotEnv().load('.env');
+  runApp(App());
+}
 
-class MyApp extends StatelessWidget {
+class SimpleBlocDelegate extends BlocDelegate {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: App(),
-    );
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    print(transition);
   }
 }
