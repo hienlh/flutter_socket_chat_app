@@ -137,7 +137,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     color: Colors.grey,
                     size: 20,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    getImage();
+                  },
                 )
               ],
             );

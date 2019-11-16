@@ -15,7 +15,6 @@ dependencies:
   http: ^0.12.0+2
   toast: ^0.1.5
   equatable: ^0.1.6
-  flutter_socket_io: ^0.6.0
   socket_io_client: ^0.9.5
   bloc: ^0.13.0
   flutter_bloc: ^0.13.0
@@ -23,7 +22,7 @@ dependencies:
   firebase_ml_vision: ^0.9.2
   image_picker: ^0.6.1+11
   rxdart: ^0.22.6
-  cloud_firestore: ^0.11.0+1
+  firebase_core: ^0.4.0+9
 
 dev_dependencies:
   flutter_test:
